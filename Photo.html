@@ -1,0 +1,86 @@
+<html>
+    <head>
+        <style>
+            .obj-container {
+    margin: 20px 0;
+    position: relative;
+}
+.obj-photo img {
+    width: 100%;
+}
+.obj-link {
+    font-family: Verdana, sans-serif;  
+    font-size: 13px;
+}
+.obj-link span { 
+    display: inline-block;
+    font-size: 15px;
+    border: 2px solid #BFE2FF;
+    border-radius: 6px;
+    padding: 4px 12px;
+    margin: 10px 6px 0 0;
+    transition: 0.3s;
+    cursor: default;
+}    
+.obj-link span:hover { 
+    background: #BFE2FF;
+    border: 2px solid #337AB7;
+}    
+.obj-img {
+    position: absolute;
+    border-radius: 10px;
+    box-shadow: 0 8px 26px rgba(0,0,0,0.4), 0 28px 30px rgba(0,0,0,0.3);
+    opacity: 0;
+    transition: 0.3s;
+    overflow: hidden;
+    border: 1px solid transparent;
+}
+.obj-img img {
+    position: absolute;
+}
+.obj-link span:hover .obj-img {
+    opacity: 1;
+    transform: scale(1.5);
+    border: 2px solid #BFE2FF;
+}
+</style>
+    <script>
+        $(window).on('load resize', function () {
+    $('.obj-img').remove();
+    $('.obj-container').each(function() {    
+        let m = $(this);
+        let pic = m.find('.obj-photo img');
+        let links = m.find('.obj-link');
+        let cont_w = pic.width();
+        let cont_h = pic.height();
+        m.height(cont_h);
+        m.css('margin-bottom', links.height() + 20);
+        m.find('.obj-link span').each(function() {
+            let obj_x = parseFloat($(this).attr('data-x'));
+            let obj_y = parseFloat($(this).attr('data-y'));
+            let obj_w = parseFloat($(this).attr('data-w'));
+            let obj_h = parseFloat($(this).attr('data-h'));
+            let obj_r = parseFloat($(this).attr('data-r'));
+            if (obj_h == 0) {
+                obj_h = cont_w * obj_w / cont_h;
+            };
+            let obj_img = pic.attr('src');
+            let pos_x = Math.round(cont_w / 100 * (obj_x - obj_w /2));
+            let pos_y = Math.round(cont_h / 100 * (obj_y - obj_h /2));
+            $('<div style="left: '+ pos_x +'px; top: '+ pos_y +'px; width: '+ obj_w +'%; height: '+ obj_h +'%; border-radius: '+ obj_r +'px;" class="obj-img"><img style="left: -'+ (pos_x + 2)  +'px; top: -'+ (pos_y + 2) +'px" width="'+ cont_w +'" height="'+ cont_h +'" alt="" src="'+ obj_img +'" /></div>').appendTo(this);
+        });
+    });    
+});
+    </script>
+    </head>
+    <body>
+<div class="obj-container">
+    <div class="obj-photo">
+        <img src="Photo.jpg" alt="" />
+    </div>
+    <div class="obj-link">
+        <span data-x="52.97" data-y="46.67" data-w="12" data-h="0" data-r="100">Соколюк Григорий Михайлович</span>
+    </div>    
+</div>
+</body>
+</html>
